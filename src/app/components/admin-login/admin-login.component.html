@@ -1,0 +1,42 @@
+<div *ngIf="isLoading">
+  <h2>Chargement en cours</h2>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+
+<mat-card class="example-card" *ngIf="!isLoading">
+  <mat-card-title>Me connecter</mat-card-title>
+  <mat-card-content >
+    <form #formLogin="ngForm" (submit)="loginForm()">
+      <p>
+        <mat-form-field>
+          <mat-label>Nom d'utilisateur</mat-label>
+          <input required  [(ngModel)]="authRequest.username"  name="username" #username="ngModel" type="text" matInput placeholder="Username">
+          <mat-error *ngIf="!username.valid">
+            Veuillez saisir un username
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field>
+          <mat-label>Nom d'utilisateur</mat-label>
+          <input  type="password" name="password" matInput placeholder="Password" required #password="ngModel" [(ngModel)]="authRequest.password">
+          <mat-error *ngIf="!password.valid">
+            Veuillez saisir un mot de passe
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p class="error" *ngIf="error != ''">
+        {{ error }}
+      </p>
+
+      <div class="blueColor button">
+
+        <button type="submit" mat-raised-button color="secondary">Login</button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

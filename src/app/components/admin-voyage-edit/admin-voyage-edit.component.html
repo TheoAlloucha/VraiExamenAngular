@@ -1,0 +1,120 @@
+<div class="m-10">
+  <a [routerLink]="['/admin/view']" class="mt-10"><button mat-raised-button color="primary">Retour</button></a>
+
+</div>
+
+
+<div *ngIf="isLoading">
+  <h2>Chargement en cours</h2>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+
+<mat-card class="mt-2" *ngIf="!isLoading">
+  <mat-card-title class="m-2">Modifier un voyage</mat-card-title>
+  <mat-card-content >
+    <form #formSubmit="ngForm" (submit)="submitForm(formSubmit)" >
+      <p>
+        <mat-form-field>
+          <mat-label>Destination</mat-label>
+          <input [(ngModel)]="voyage.destination"  name="destination" #destination="ngModel" type="text" matInput placeholder="Destination" required >
+          <mat-error *ngIf="!destination.valid">
+            Veuillez saisir une destination
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Types</mat-label>
+          <mat-select [(ngModel)]="voyage.type"  name="type" #type="ngModel" type="text" required>
+            @for (type of types; track type) {
+              <mat-option [value]="type">{{type}}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="!type.valid">
+            Veuillez saisir un type
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Lattitude</mat-label>
+          <input [(ngModel)]="voyage.lattitude"  name="lattitude" #lattitude="ngModel" type="number" matInput placeholder="lattitude" required>
+          <mat-error *ngIf="!lattitude.valid">
+            Veuillez saisir une lattitude
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Longitude</mat-label>
+          <input [(ngModel)]="voyage.longitude"  name="longitude" #longitude="ngModel" type="number" matInput placeholder="longitude" required>
+          <mat-error *ngIf="!longitude.valid">
+            Veuillez saisir une longitude
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Nombre d'étoiles</mat-label>
+          <input [(ngModel)]="voyage.nbStar"  name="nbStar" #nbStar="ngModel" type="number" matInput placeholder="Nombre d'étoiles" required>
+          <mat-error *ngIf="!nbStar.valid">
+            Veuillez saisir un nombre d'étoiles
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Image principal - Source</mat-label>
+          <input [ngModel]="voyage.mainPicture?.src" name="mainSrc" #mainSrc="ngModel" type="text" matInput placeholder="Source image principal" required>
+          <mat-error *ngIf="!mainSrc.valid">
+            Veuillez saisir une source pour l'image principal.
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Image principal - Alt</mat-label>
+          <input [ngModel]="voyage.mainPicture?.alt" name="mainAlt" #mainAlt="ngModel" type="text" matInput placeholder="Alt image principal" required>
+          <mat-error *ngIf="!mainAlt.valid">
+            Veuillez saisir un alt pour l'image principal.
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <form [formGroup]="productForm">
+        <table class="table table-bordered" formArrayName="quantities">
+          <tr>
+            <th colspan="2">Ajouter plusieurs images</th>
+            <th width="150px"><button type="button" (click)="addQuantity()" class="btn btn-primary">Ajouter</button></th>
+          </tr>
+          <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
+            <td>
+              Source :
+              <input  type="text" formControlName="source"  placeholder="Source image" class="form-control">
+            </td>
+            <td>
+              Alt :
+              <input type="text" formControlName="alt"  placeholder="Alt image" class="form-control">
+            </td>
+            <td>
+              <button (click)="removeQuantity(i)" class="btn btn-danger">Supprimer</button>
+            </td>
+          </tr>
+        </table>
+
+      </form>
+
+
+
+      <p class="error" *ngIf="error != '' ">
+        {{ error }}
+      </p>
+
+      <div class="blueColor button">
+
+        <button [disabled]="!formSubmit.valid" type="submit" mat-raised-button color="secondary">Modifié</button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
